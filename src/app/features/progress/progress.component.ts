@@ -24,18 +24,19 @@ export class ProgressComponent {
     goalId: '',
     title: '',
     description: '',
-    startDate: this.getDefaultStartDate(),
-    endDate: this.getDefaultEndDate()
+    startDate: '',
+    endDate: ''
   };
 
   private getDefaultStartDate(): string {
     const date = new Date(this.viewDate());
+    date.setDate(1);
     return date.toISOString().split('T')[0];
   }
 
   private getDefaultEndDate(): string {
     const date = new Date(this.viewDate());
-    date.setDate(date.getDate() + 7);
+    date.setMonth(date.getMonth() + 1, 0);
     return date.toISOString().split('T')[0];
   }
 
