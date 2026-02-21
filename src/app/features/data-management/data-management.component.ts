@@ -46,10 +46,33 @@ import { StorageService } from '../../services/storage.service';
     </div>
   `,
   styles: [`
-    .page { max-width: 900px; margin: 0 auto; padding: 20px; }
-    .page-header { margin-bottom: 2.5rem; text-align: center; }
-    h1 { font-size: 2.2rem; color: #1e293b; margin-bottom: 0.5rem; }
-    .subtitle { color: #64748b; font-size: 1.1rem; }
+    .page { max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .page-header {
+      margin-bottom: 2.5rem;
+      background: linear-gradient(135deg, #ffcb30 0%, #ef6a14 50%, #ff2ede 100%);
+      padding: 48px 32px;
+      border-radius: 24px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .page-header h1, .page-header .subtitle {
+      position: relative;
+      z-index: 1;
+    }
+    h1 { font-size: 2.4rem; color: white; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    .subtitle { color: rgba(255, 255, 255, 0.85); font-size: 1.1rem; }
 
     .data-grid {
       display: grid;
@@ -61,24 +84,40 @@ import { StorageService } from '../../services/storage.service';
       background: white;
       padding: 2rem;
       border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 24px rgba(32, 3, 60, 0.08);
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.2s;
+      transition: all 250ms;
+      border: 1px solid #f1f5f9;
+      position: relative;
+      overflow: hidden;
 
-      &:hover { transform: translateY(-4px); }
-      &.danger { border: 1px solid #fee2e2; }
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ff2ede 0%, #ef6a14 50%, #883fff 100%);
+      }
+
+      &:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(255, 46, 222, 0.12); }
+      &.danger::before { background: linear-gradient(90deg, #ef4444, #f87171); }
 
       .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-      h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 0.75rem; }
+      h3 { font-size: 1.25rem; color: #20033c; margin-bottom: 0.75rem; font-weight: 700; }
       p { font-size: 0.95rem; color: #64748b; margin-bottom: 1.5rem; line-height: 1.5; flex: 1; }
     }
 
-    .btn { background: #3760f1; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; transition: opacity 0.2s; &:hover { opacity: 0.9; } }
-    .btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; &:hover { background: #e2e8f0; } }
-    .btn-danger { background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; &:hover { background: #dc2626; } }
+    .btn { background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: all 250ms; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 46, 222, 0.3); }
+    .btn-secondary { background: linear-gradient(135deg, rgba(255, 46, 222, 0.1) 0%, rgba(136, 63, 255, 0.1) 100%); color: #ff2ede; border: 1px solid rgba(255, 46, 222, 0.2); padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: all 250ms; }
+    .btn-secondary:hover { background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%); color: white; border-color: transparent; box-shadow: 0 8px 20px rgba(255, 46, 222, 0.25); }
+    .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #f87171 100%); color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; transition: all 250ms; }
+    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3); }
   `]
 })
 export class DataManagementComponent {

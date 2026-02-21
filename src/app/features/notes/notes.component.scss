@@ -9,9 +9,45 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, #ef6a14 0%, #ff2ede 50%, #883fff 100%);
+  padding: 48px 32px;
+  border-radius: 24px;
+  color: white;
+  position: relative;
+  overflow: hidden;
 
-  h1 { font-size: 2.2rem; color: #1e293b; margin-bottom: 0.5rem; font-weight: 800; }
-  .subtitle { color: #64748b; font-size: 1.1rem; }
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+  }
+
+  > div:first-child {
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.1rem;
+  }
+
+  .btn {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .notes-grid {
