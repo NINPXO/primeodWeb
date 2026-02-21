@@ -27,12 +27,13 @@ import { CommonModule } from '@angular/common';
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(32, 3, 60, 0.7);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      animation: fadeIn 200ms ease;
+      animation: fadeIn 250ms ease;
     }
 
     @keyframes fadeIn {
@@ -42,16 +43,19 @@ import { CommonModule } from '@angular/common';
 
     .modal-content {
       background: var(--colorLight);
-      border-radius: 16px;
+      border-radius: 20px;
       width: 90%;
-      max-width: 500px;
+      max-width: 600px;
       max-height: 90vh;
       overflow-y: auto;
-      animation: slideUp 200ms ease;
+      animation: slideUp 250ms ease;
+      box-shadow: 0 20px 60px rgba(255, 46, 222, 0.2);
+      position: relative;
+      overflow: hidden;
     }
 
     @keyframes slideUp {
-      from { transform: translateY(20px); opacity: 0; }
+      from { transform: translateY(30px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
 
@@ -59,32 +63,56 @@ import { CommonModule } from '@angular/common';
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--borderColor);
+      padding: 24px 32px;
+      background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%);
+      color: white;
+      position: relative;
+    }
+
+    .modal-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff2ede 0%, #ef6a14 50%, #883fff 100%);
     }
 
     .modal-header h2 {
-      font-size: 1.25rem;
-      color: var(--colorDark);
+      font-size: 1.4rem;
+      color: white;
       margin: 0;
+      font-weight: 800;
+      letter-spacing: -0.5px;
     }
 
     .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      font-size: 1.8rem;
       cursor: pointer;
-      color: var(--colorDark);
-      opacity: 0.6;
+      color: white;
+      opacity: 0.8;
       line-height: 1;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 200ms;
+      flex-shrink: 0;
     }
 
     .close-btn:hover {
       opacity: 1;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+      transform: scale(1.1);
     }
 
     .modal-body {
-      padding: 24px;
+      padding: 32px;
     }
   `]
 })
