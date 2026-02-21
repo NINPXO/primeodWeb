@@ -16,7 +16,7 @@
     <button class="btn" (click)="openSubGoalModal()">+ Add Sub-goal</button>
   </div>
 
-  <app-modal [isOpen]="showSubGoalModal" title="Add Sub-goal" (close)="closeSubGoalModal()">
+  <app-modal [isOpen]="showSubGoalModal()" title="Add Sub-goal" (close)="closeSubGoalModal()">
     <div class="form-card">
       <div class="form-group">
         <label>Parent Goal *</label>
@@ -52,7 +52,7 @@
     </div>
   </app-modal>
 
-  <app-modal [isOpen]="showTaskModal" [title]="editingTask ? 'Edit Task' : 'Add Task'" (close)="closeTaskModal()">
+  <app-modal [isOpen]="showTaskModal()" [title]="editingTask ? 'Edit Task' : 'Add Task'" (close)="closeTaskModal()">
     <div class="form-card scrollable">
       <div class="form-group">
         <label>Task Type *</label>

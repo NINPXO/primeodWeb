@@ -4,6 +4,75 @@
   padding: 20px;
 }
 
+.date-selector {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 16px rgba(32, 3, 60, 0.06);
+  border: 1px solid #f1f5f9;
+
+  .date-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .date-input {
+      flex: 1;
+      max-width: 300px;
+      padding: 0.85rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--colorDark);
+      background: white;
+      transition: all 200ms;
+      font-weight: 500;
+
+      &:hover {
+        border-color: rgba(255, 46, 222, 0.3);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--colorPink);
+        box-shadow: 0 0 0 4px rgba(255, 46, 222, 0.1);
+      }
+
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.7;
+        filter: invert(0.4);
+      }
+    }
+
+    .btn-today {
+      background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 250ms var(--genericEaseInOut);
+      white-space: nowrap;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 46, 222, 0.3);
+      }
+    }
+  }
+
+  .date-hint {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+  }
+}
+
 .dashboard-header {
   display: flex;
   justify-content: space-between;

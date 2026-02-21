@@ -13,20 +13,31 @@ import { ModalComponent } from '../../components/modal/modal.component';
 })
 export class ProgressComponent {
   storage = inject(StorageService);
-  
+
   viewDate = signal(new Date());
   selectedSubGoalId: string = '';
 
-  showSubGoalModal = false;
-  showTaskModal = false;
+  showSubGoalModal = signal(false);
+  showTaskModal = signal(false);
 
   newSubGoal = {
     goalId: '',
     title: '',
     description: '',
-    startDate: '',
-    endDate: ''
+    startDate: this.getDefaultStartDate(),
+    endDate: this.getDefaultEndDate()
   };
+
+  private getDefaultStartDate(): string {
+    const date = new Date(this.viewDate());
+    return date.toISOString().split('T')[0];
+  }
+
+  private getDefaultEndDate(): string {
+    const date = new Date(this.viewDate());
+    date.setDate(date.getDate() + 7);
+    return date.toISOString().split('T')[0];
+  }
 
   newTask = {
     title: '',
@@ -76,20 +87,33 @@ export class ProgressComponent {
   }
 
   openSubGoalModal() {
-    this.showSubGoalModal = true;
+    this.newSubGoal = {
+      goalId: '',
+      title: '',
+      description: '',
+      startDate: this.getDefaultStartDate(),
+      endDate: this.getDefaultEndDate()
+    };
+    this.showSubGoalModal.set(true);
   }
 
   closeSubGoalModal() {
-    this.showSubGoalModal = false;
+    this.showSubGoalModal.set(false);
     this.newSubGoal = { goalId: '', title: '', description: '', startDate: '', endDate: '' };
   }
 
   addSubGoal() {
-    if (this.newSubGoal.title && this.newSubGoal.goalId) {
+    if (this.newSubGoal.title && this.newSubGoal.goalId && this.newSubGoal.startDate) {
       this.storage.addSubGoal({
-        ...this.newSubGoal
+        goalId: this.newSubGoal.goalId,
+        title: this.newSubGoal.title,
+        description: this.newSubGoal.description,
+        startDate: this.newSubGoal.startDate,
+        endDate: this.newSubGoal.endDate
       });
       this.closeSubGoalModal();
+    } else {
+      alert('Please fill in required fields: Goal, Title, and Start Date');
     }
   }
 
@@ -120,11 +144,11 @@ export class ProgressComponent {
       this.newTask = { title: '', description: '', duration: '', targetEndDate: '', subtask: '', frequency: '', type: 'practice', links: [], files: [] };
     }
     this.newLink = { title: '', url: '' };
-    this.showTaskModal = true;
+    this.showTaskModal.set(true);
   }
 
   closeTaskModal() {
-    this.showTaskModal = false;
+    this.showTaskModal.set(false);
     this.editingTask = null;
     this.newTask = { title: '', description: '', duration: '', targetEndDate: '', subtask: '', frequency: '', type: 'practice', links: [], files: [] };
   }

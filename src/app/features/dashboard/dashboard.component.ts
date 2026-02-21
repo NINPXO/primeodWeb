@@ -1,20 +1,30 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { StorageService, Goal, SubGoal, Task, TaskStatus } from '../../services/storage.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
   storage = inject(StorageService);
 
-  today = new Date();
-  todayStr = this.today.toISOString().split('T')[0];
+  selectedDate = signal(new Date());
+
+  get today(): Date {
+    return this.selectedDate();
+  }
+
+  get todayStr(): string {
+    return this.today.toISOString().split('T')[0];
+  }
+
+  maxDate = new Date().toISOString().split('T')[0];
 
   get todayDate(): string {
     return this.storage.getTodayDate();
@@ -114,5 +124,16 @@ export class DashboardComponent {
 
   getGoalProgress(goalId: string): number {
     return this.storage.getGoalProgress(goalId);
+  }
+
+  // --- DATE SELECTOR ---
+
+  onDateChange(dateStr: string) {
+    const newDate = new Date(dateStr);
+    this.selectedDate.set(newDate);
+  }
+
+  goToToday() {
+    this.selectedDate.set(new Date());
   }
 }

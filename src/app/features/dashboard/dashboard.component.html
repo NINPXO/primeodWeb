@@ -9,6 +9,22 @@
     </div>
   </div>
 
+  <!-- Date Selector -->
+  <div class="date-selector">
+    <div class="date-controls">
+      <input
+        type="date"
+        [value]="todayStr"
+        (change)="onDateChange($event.target.value)"
+        [max]="maxDate"
+        class="date-input">
+      <button class="btn-today" (click)="goToToday()" *ngIf="todayStr !== maxDate">
+        Today
+      </button>
+    </div>
+    <p class="date-hint">Select a date to view tasks for that day</p>
+  </div>
+
   <!-- Progress Overview -->
   <section class="overview-section">
     <div class="stats-row">
