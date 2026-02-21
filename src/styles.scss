@@ -143,17 +143,30 @@ h3 {
 
 /* ========== CARD STYLES ========== */
 .card {
-  background-color: var(--colorOffWhite);
-  border: 1px solid var(--borderColor);
+  background-color: white;
+  border: 1px solid #f1f5f9;
   border-radius: 16px;
   padding: 24px;
   transition: all 250ms var(--genericEaseInOut);
+  box-shadow: 0 4px 16px rgba(32, 3, 60, 0.06);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff2ede 0%, #ef6a14 50%, #883fff 100%);
+  }
 }
 
 .card:hover {
   box-shadow: 0 16px 32px rgba(255, 46, 222, 0.15);
   transform: translateY(-4px);
-  border-color: var(--colorPink);
+  border-color: rgba(255, 46, 222, 0.2);
 }
 
 .card-gradient {
@@ -239,6 +252,78 @@ h3 {
   opacity: 0.95;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(32, 3, 60, 0.2);
+}
+
+/* ========== FORM STYLING ========== */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+
+  label {
+    font-weight: 700;
+    color: var(--colorDark);
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.85rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--colorDark);
+  background: white;
+  transition: all 200ms;
+
+  &:hover {
+    border-color: rgba(255, 46, 222, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--colorPink);
+    box-shadow: 0 0 0 4px rgba(255, 46, 222, 0.1);
+  }
+
+  &:disabled {
+    background: #f8fafc;
+    color: #94a3b8;
+    cursor: not-allowed;
+  }
+}
+
+input[type="date"] {
+  position: relative;
+
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  &::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
 }
 
 .btn-primary {
