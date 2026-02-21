@@ -123,15 +123,195 @@ h3 {
   transform: translateY(-1px);
 }
 
+/* ========== GRADIENT DEFINITIONS ========== */
+@mixin gradient-primary {
+  background: linear-gradient(135deg, #ff2ede 0%, #ef6a14 50%, #ffcb30 100%);
+}
+
+@mixin gradient-accent {
+  background: linear-gradient(135deg, #883fff 0%, #ff2ede 100%);
+}
+
+@mixin gradient-subtle {
+  background: linear-gradient(180deg, #ff2ede15 0%, #ef6a1415 100%);
+}
+
+/* ========== CARD STYLES ========== */
 .card {
   background-color: var(--colorOffWhite);
   border: 1px solid var(--borderColor);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 24px;
   transition: all 250ms var(--genericEaseInOut);
 }
 
 .card:hover {
-  box-shadow: 0 8px 24px rgba(32, 3, 60, 0.12);
+  box-shadow: 0 16px 32px rgba(255, 46, 222, 0.15);
+  transform: translateY(-4px);
+  border-color: var(--colorPink);
+}
+
+.card-gradient {
+  @include gradient-primary;
+  color: white;
+  border: none;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-gradient::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: inherit;
+  border-radius: 50%;
+  opacity: 0.1;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+.card-gradient > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -20px); }
+}
+
+.card-accent {
+  @include gradient-accent;
+  color: white;
+  border: none;
+}
+
+/* ========== SECTION STYLES ========== */
+.section {
+  padding: 60px 24px;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 48px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--colorDark);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ========== BUTTON VARIATIONS ========== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 250ms var(--genericEaseInOut);
+  background-color: var(--buttonColor);
+  color: white;
+  border: 2px solid transparent;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+}
+
+.btn:hover {
+  opacity: 0.95;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(32, 3, 60, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 12px 28px rgba(255, 46, 222, 0.3);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--colorDark);
+  color: var(--colorDark);
+}
+
+.btn-secondary:hover {
+  background-color: var(--colorDark);
+  color: white;
+}
+
+.btn-gradient {
+  @include gradient-primary;
+  border: none;
+}
+
+.btn-gradient:hover {
+  box-shadow: 0 12px 32px rgba(255, 46, 222, 0.4);
+  transform: translateY(-3px);
+}
+
+.btn-dark {
+  background-color: var(--colorDark);
+  color: white;
+}
+
+.btn-dark:hover {
+  background-color: #2d0a4a;
+}
+
+/* ========== GRADIENT BACKGROUND SECTIONS ========== */
+.bg-gradient-primary {
+  @include gradient-primary;
+  color: white;
+}
+
+.bg-gradient-accent {
+  @include gradient-accent;
+  color: white;
+}
+
+.bg-gradient-subtle {
+  @include gradient-subtle;
+}
+
+/* ========== BADGE/PILL STYLES ========== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: var(--colorOffWhite);
+  color: var(--colorDark);
+}
+
+.badge-primary {
+  background-color: #ff2ede20;
+  color: var(--colorPink);
+}
+
+.badge-accent {
+  background-color: #883fff20;
+  color: var(--colorBlurple);
+}
+
+.badge-success {
+  background-color: #28a74520;
+  color: #28a745;
 }
