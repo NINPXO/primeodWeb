@@ -1,0 +1,157 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div class="welcome">
+      <h1>Hello, Learner!</h1>
+      <p class="date">{{ todayDate }}</p>
+    </div>
+    <div class="quick-actions">
+      <button class="btn" routerLink="/daily-log">+ Add Log</button>
+    </div>
+  </div>
+
+  <!-- Progress Overview -->
+  <section class="overview-section">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Daily Completion</div>
+        <div class="stat-main">
+          <span class="value">{{ dailyProgress() }}%</span>
+          <div class="mini-bar"><div class="fill" [style.width.%]="dailyProgress()"></div></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Weekly Velocity</div>
+        <div class="stat-main">
+          <span class="value">{{ weeklyProgress() }}%</span>
+          <div class="mini-bar"><div class="fill" [style.width.%]="weeklyProgress()"></div></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Monthly Target</div>
+        <div class="stat-main">
+          <span class="value">{{ monthlyProgress() }}%</span>
+          <div class="mini-bar"><div class="fill" [style.width.%]="monthlyProgress()"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="main-grid">
+    <!-- Left Column: Tasks -->
+    <div class="tasks-column">
+      
+      <!-- Today's Tasks -->
+      <div class="task-group-card">
+        <div class="group-header">
+          <h3>Today's Focus</h3>
+          <span class="count-badge">{{ todayPendingTasks().length }}</span>
+        </div>
+        <div class="task-list">
+          @for (task of todayPendingTasks(); track task.id) {
+            <div class="task-item-inline">
+              <span class="type-icon">
+                @switch (task.type) {
+                  @case ('video') { 📺 }
+                  @case ('book') { 📚 }
+                  @case ('questions') { ❓ }
+                  @default { 🛠️ }
+                }
+              </span>
+              <div class="task-info">
+                <h4>{{ task.title }}</h4>
+                <span class="goal-tag">{{ getGoalTitle(task.subGoalId) }}</span>
+              </div>
+              <button class="btn-check" routerLink="/daily-log">Update</button>
+            </div>
+          } @empty {
+            <p class="empty-msg">No pending tasks for today. Great job!</p>
+          }
+        </div>
+      </div>
+
+      <!-- Weekly Tasks -->
+      <div class="task-group-card">
+        <div class="group-header">
+          <h3>This Week's Milestones</h3>
+          <span class="count-badge secondary">{{ weekPendingTasks().length }}</span>
+        </div>
+        <div class="task-list">
+          @for (task of weekPendingTasks(); track task.id) {
+            <div class="task-item-inline">
+              <span class="type-icon">
+                @switch (task.type) {
+                  @case ('video') { 📺 }
+                  @case ('book') { 📚 }
+                  @case ('questions') { ❓ }
+                  @default { 🛠️ }
+                }
+              </span>
+              <div class="task-info">
+                <h4>{{ task.title }}</h4>
+                <span class="goal-tag">{{ getGoalTitle(task.subGoalId) }}</span>
+              </div>
+            </div>
+          } @empty {
+            <p class="empty-msg">All weekly goals are on track.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Backlog -->
+      @if (backlogTasks().length > 0) {
+        <div class="task-group-card danger">
+          <div class="group-header">
+            <h3>Backlog (Overdue)</h3>
+            <span class="count-badge danger">{{ backlogTasks().length }}</span>
+          </div>
+          <div class="task-list">
+            @for (task of backlogTasks(); track task.id) {
+              <div class="task-item-inline">
+                <span class="type-icon">⚠️</span>
+                <div class="task-info">
+                  <h4>{{ task.title }}</h4>
+                  <span class="goal-tag">{{ getGoalTitle(task.subGoalId) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Right Column: Goals Quick View -->
+    <div class="goals-column">
+      <div class="section-title">
+        <h3>Primary Goals</h3>
+        <button class="link-btn" routerLink="/goals">See all</button>
+      </div>
+      
+      <div class="goals-stack">
+        @for (goal of storage.goals(); track goal.id) {
+          <div class="goal-mini-card">
+            <div class="g-info">
+              <span class="g-title">{{ goal.title }}</span>
+              <span class="g-pct">{{ getGoalProgress(goal.id) }}%</span>
+            </div>
+            <div class="g-bar"><div class="g-fill" [style.width.%]="getGoalProgress(goal.id)"></div></div>
+          </div>
+        }
+      </div>
+
+      <div class="quick-links-panel">
+        <a routerLink="/progress" class="quick-link">
+          <span class="icon">📊</span>
+          <span>Detailed Progress</span>
+        </a>
+        <a routerLink="/notes" class="quick-link">
+          <span class="icon">📝</span>
+          <span>Study Notes</span>
+        </a>
+        <a routerLink="/data" class="quick-link">
+          <span class="icon">⚙️</span>
+          <span>Data Settings</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

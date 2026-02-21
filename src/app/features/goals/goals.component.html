@@ -1,0 +1,76 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Main Goals</h1>
+      <p class="subtitle">Set and track your primary objectives</p>
+    </div>
+    <button class="btn" (click)="openModal()">+ Add New Goal</button>
+  </div>
+
+  <app-modal [isOpen]="showModal" title="Create New Goal" (close)="closeModal()">
+    <div class="form-card">
+      <div class="form-group">
+        <label>Goal Title *</label>
+        <input [(ngModel)]="newGoal.title" placeholder="e.g., Master Data Structures" class="input">
+      </div>
+
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="newGoal.description" placeholder="What is this goal about?" class="textarea" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn" (click)="addGoal()" [disabled]="!newGoal.title">Save Goal</button>
+      </div>
+    </div>
+  </app-modal>
+
+  <div class="goals-grid">
+    @for (goal of storage.goals(); track goal.id) {
+      <div class="goal-rich-card">
+        <div class="goal-card-header">
+          <div class="goal-title-area">
+            <h3>{{ goal.title }}</h3>
+            <p class="goal-desc">{{ goal.description }}</p>
+          </div>
+          <button class="delete-btn-minimal" (click)="deleteGoal(goal.id)" title="Delete Goal">×</button>
+        </div>
+
+        <div class="goal-card-body">
+          <div class="progress-container">
+            <div class="progress-label">
+              <span>Overall Progress</span>
+              <span class="pct">{{ getGoalProgress(goal.id) }}%</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-fill" [style.width.%]="getGoalProgress(goal.id)"></div>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta-item">
+              <span class="icon">📅</span>
+              <div class="meta-text">
+                <label>Timeline</label>
+                <span>{{ getGoalDuration(goal.id) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="goal-card-footer">
+          <p class="hint-text">Manage milestones in the Progress section</p>
+          <button class="btn-outline" routerLink="/progress">Update Milestones</button>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state-card">
+        <div class="icon">🎯</div>
+        <h3>No goals defined yet</h3>
+        <p>Start by defining a major goal or reset to defaults in the data page.</p>
+        <button class="btn" (click)="openModal()">Create Your First Goal</button>
+      </div>
+    }
+  </div>
+</div>

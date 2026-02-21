@@ -1,0 +1,204 @@
+<div class="page">
+  <div class="page-header month-nav-header">
+    <div>
+      <h1>Progress Tracking</h1>
+      <p class="subtitle">Overview of all sub-goals for the month</p>
+    </div>
+    
+    <div class="month-controls">
+      <button class="btn-icon" (click)="prevMonth()" title="Previous Month">←</button>
+      <div class="current-month" (click)="goToCurrentMonth()" title="Click to go to current month">
+        {{ monthLabel() }}
+      </div>
+      <button class="btn-icon" (click)="nextMonth()" title="Next Month">→</button>
+    </div>
+
+    <button class="btn" (click)="openSubGoalModal()">+ Add Sub-goal</button>
+  </div>
+
+  <app-modal [isOpen]="showSubGoalModal" title="Add Sub-goal" (close)="closeSubGoalModal()">
+    <div class="form-card">
+      <div class="form-group">
+        <label>Parent Goal *</label>
+        <select [(ngModel)]="newSubGoal.goalId" class="input">
+          <option value="">Select a Goal</option>
+          @for (goal of storage.goals(); track goal.id) {
+            <option [value]="goal.id">{{ goal.title }}</option>
+          }
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Title *</label>
+        <input [(ngModel)]="newSubGoal.title" placeholder="Sub-goal title" class="input">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea [(ngModel)]="newSubGoal.description" placeholder="Description" class="textarea" rows="2"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input [(ngModel)]="newSubGoal.startDate" type="date" class="input">
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input [(ngModel)]="newSubGoal.endDate" type="date" class="input">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeSubGoalModal()">Cancel</button>
+        <button class="btn" (click)="addSubGoal()" [disabled]="!newSubGoal.title || !newSubGoal.goalId">Save Sub-goal</button>
+      </div>
+    </div>
+  </app-modal>
+
+  <app-modal [isOpen]="showTaskModal" [title]="editingTask ? 'Edit Task' : 'Add Task'" (close)="closeTaskModal()">
+    <div class="form-card scrollable">
+      <div class="form-group">
+        <label>Task Type *</label>
+        <select [(ngModel)]="newTask.type" class="input">
+          <option value="practice">Practice</option>
+          <option value="questions">Questions</option>
+          <option value="video">Video</option>
+          <option value="book">Book</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Task Title *</label>
+        <input [(ngModel)]="newTask.title" placeholder="Task title" class="input">
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Duration</label>
+          <input [(ngModel)]="newTask.duration" placeholder="e.g., 2h, 1 day" class="input">
+        </div>
+        <div class="form-group">
+          <label>Target End Date</label>
+          <input [(ngModel)]="newTask.targetEndDate" type="date" class="input">
+        </div>
+      </div>
+
+      <!-- Links Section -->
+      <div class="form-group">
+        <label>Resources & Links</label>
+        <div class="link-input-row">
+          <input [(ngModel)]="newLink.title" placeholder="Link Title" class="input compact">
+          <input [(ngModel)]="newLink.url" placeholder="URL" class="input compact">
+          <button type="button" class="btn-small primary" (click)="addLink()">Add</button>
+        </div>
+        @if (newTask.links.length > 0) {
+          <div class="attachment-list">
+            @for (link of newTask.links; track $index) {
+              <div class="attachment-pill">
+                <span>🔗 {{ link.title }}</span>
+                <button type="button" (click)="removeLink($index)">×</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Files Section -->
+      <div class="form-group">
+        <label>Attachments</label>
+        <div class="file-upload-row">
+          <input type="file" (change)="onFileSelected($event)" multiple class="file-input">
+        </div>
+        @if (newTask.files.length > 0) {
+          <div class="attachment-list">
+            @for (file of newTask.files; track $index) {
+              <div class="attachment-pill">
+                <span>📄 {{ file.name }}</span>
+                <button type="button" (click)="removeFile($index)">×</button>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Subtask Details</label>
+        <input [(ngModel)]="newTask.subtask" placeholder="Subtask details" class="input">
+      </div>
+      <div class="form-group">
+        <label>Frequency</label>
+        <input [(ngModel)]="newTask.frequency" placeholder="e.g., Daily, Weekly" class="input">
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeTaskModal()">Cancel</button>
+        <button class="btn" (click)="saveTask()" [disabled]="!newTask.title">Save Task</button>
+      </div>
+    </div>
+  </app-modal>
+
+  <div class="sub-goals-list">
+    @for (sg of filteredSubGoals(); track sg.id) {
+      <div class="sub-goal-card">
+        <div class="sub-goal-header">
+          <div class="sub-goal-info">
+            <div class="badge-row">
+              <span class="goal-badge">{{ getGoalTitle(sg.goalId) }}</span>
+              <span class="dates">{{ sg.startDate }} to {{ sg.endDate }}</span>
+            </div>
+            <h3>{{ sg.title }}</h3>
+            <p class="sg-desc">{{ sg.description }}</p>
+          </div>
+          <div class="sub-goal-actions">
+            <button class="btn-small" (click)="openTaskModal(sg.id)">+ Task</button>
+            <button class="delete-btn" (click)="deleteSubGoal(sg.id)">Delete</button>
+          </div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-meta">
+            <span>Progress: {{ getSubGoalProgress(sg.id) }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getSubGoalProgress(sg.id)"></div>
+          </div>
+        </div>
+
+        <div class="tasks-list">
+          @for (task of getTasks(sg.id); track task.id) {
+            <div class="task-item" [class.completed]="task.status === 'completed'">
+              <div class="task-details">
+                <div class="task-header-row">
+                  <div class="title-with-tag">
+                    <span class="type-tag" [class]="task.type">{{ task.type }}</span>
+                    <h4>{{ task.title }}</h4>
+                  </div>
+                  <span class="status-pill" [class]="task.status">{{ task.status }}</span>
+                </div>
+                
+                <div class="task-meta">
+                  <span>{{ task.duration }}</span> | 
+                  <span>Due: {{ task.targetEndDate }}</span> | 
+                  <span>{{ task.frequency }}</span>
+                </div>
+
+                @if ((task.links && task.links.length > 0) || (task.files && task.files.length > 0)) {
+                  <div class="task-attachments">
+                    @for (link of task.links; track $index) {
+                      <a [href]="link.url" target="_blank" class="attachment-link">🔗 {{ link.title }}</a>
+                    }
+                    @for (file of task.files; track $index) {
+                      <span class="attachment-file">📄 {{ file.name }}</span>
+                    }
+                  </div>
+                }
+              </div>
+              <button class="edit-btn" (click)="openTaskModal(sg.id, task)">✎</button>
+              <button class="delete-btn-small" (click)="deleteTask(task.id)">×</button>
+            </div>
+          } @empty {
+            <p class="empty-tasks">No tasks added yet.</p>
+          }
+        </div>
+      </div>
+    } @empty {
+      <p class="empty">No sub-goals found for {{ monthLabel() }}.</p>
+    }
+  </div>
+</div>

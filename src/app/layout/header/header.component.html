@@ -1,0 +1,16 @@
+<header class="sidebar">
+  <a routerLink="/" class="logo">
+    <span class="logo-icon">P</span>
+    <span class="logo-text">PrimeOS</span>
+  </a>
+  <nav class="nav-menu">
+    @for (item of navItems; track item.route) {
+      <a 
+        [routerLink]="item.route" 
+        routerLinkActive="active"
+        class="nav-item">
+        {{ item.label }}
+      </a>
+    }
+  </nav>
+</header>

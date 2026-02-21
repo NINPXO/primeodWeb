@@ -1,0 +1,101 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Learning Plan Summary</h1>
+      <p class="subtitle">Comprehensive overview of your goals and progress</p>
+    </div>
+    <div class="overall-stats">
+      <div class="stat-item">
+        <span class="stat-value">{{ getOverallAverageProgress() }}%</span>
+        <span class="stat-label">Average Progress</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">{{ getTotalLogsCount() }}</span>
+        <span class="stat-label">Total Logs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    @for (goal of summary(); track goal.id) {
+      <div class="goal-summary-card" [class.is-expanded]="expandedGoalId() === goal.id">
+        <div class="card-header">
+          <div class="goal-identity">
+            <h2>{{ goal.title }}</h2>
+            <span class="duration-badge">{{ goal.duration }}</span>
+          </div>
+          <div class="progress-circle">
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" [style.stroke-dasharray]="goal.progress + ', 100'" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="20.35" class="percentage">{{ goal.progress }}%</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="card-body">
+          @if (expandedGoalId() !== goal.id) {
+            <!-- Summary View -->
+            <div class="stats-row">
+              <div class="mini-stat">
+                <span class="val">{{ goal.completedSubGoals }} / {{ goal.subGoalCount }}</span>
+                <span class="lab">Sub-goals Done</span>
+              </div>
+            </div>
+
+            <div class="upcoming-section">
+              <h3>Next Milestone</h3>
+              @if (goal.nextSubGoal) {
+                <div class="next-sg">
+                  <span class="sg-title">{{ goal.nextSubGoal.title }}</span>
+                  <span class="sg-date">Starts: {{ goal.nextSubGoal.startDate }}</span>
+                </div>
+              } @else {
+                <p class="none">No upcoming sub-goals</p>
+              }
+            </div>
+
+            <div class="logs-section">
+              <h3>Recent Activity</h3>
+              @for (log of goal.recentLogs; track log.id) {
+                <div class="log-entry">
+                  <span class="log-date">{{ log.date }}</span>
+                  <span class="log-title">{{ log.title }}</span>
+                </div>
+              } @empty {
+                <p class="none">No logs linked to this goal yet</p>
+              }
+            </div>
+          } @else {
+            <!-- Detailed View -->
+            <div class="detailed-tree">
+              <h3>Complete Path</h3>
+              @for (sg of goal.detailedSubGoals; track sg.id) {
+                <div class="sg-detail-item">
+                  <div class="sg-header">
+                    <span class="sg-title">{{ sg.title }}</span>
+                    <span class="sg-progress">{{ sg.progress }}%</span>
+                  </div>
+                  <div class="task-mini-list">
+                    @for (task of sg.tasks; track task.id) {
+                      <div class="task-mini-item" [class]="task.status">
+                        <span class="status-dot"></span>
+                        <span class="task-title">{{ task.title }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-text" (click)="toggleExpand(goal.id)">
+            {{ expandedGoalId() === goal.id ? 'Collapse Summary' : 'View Complete Details' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

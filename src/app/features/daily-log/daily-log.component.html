@@ -1,0 +1,123 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Daily Logs</h1>
+      <p class="subtitle">Record and review your journey</p>
+    </div>
+    <button class="btn" (click)="openModal()">+ Add Log</button>
+  </div>
+
+  <div class="log-controls">
+    <div class="view-tabs">
+      <button class="tab-btn" [class.active]="viewMode() === 'day'" (click)="setViewMode('day')">Day</button>
+      <button class="tab-btn" [class.active]="viewMode() === 'week'" (click)="setViewMode('week')">Week</button>
+      <button class="tab-btn" [class.active]="viewMode() === 'month'" (click)="setViewMode('month')">Month</button>
+    </div>
+    
+    <div class="date-navigator">
+      <input type="date" [ngModel]="selectedDate()" (ngModelChange)="selectedDate.set($event)" class="date-picker" [max]="maxDate">
+      <span class="current-view-label">{{ viewLabel }}</span>
+    </div>
+  </div>
+
+  <app-modal [isOpen]="showModal" title="Add Daily Log" (close)="closeModal()">
+    <div class="form-card">
+      <div class="form-group">
+        <label>Log Type</label>
+        <div class="type-selector">
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="newLog.type" value="normal" name="logType">
+            <span>Normal Log</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" [(ngModel)]="newLog.type" value="progress" name="logType">
+            <span>Progress Log</span>
+          </label>
+        </div>
+      </div>
+
+      @if (newLog.type === 'progress') {
+        <div class="progress-fields">
+          <div class="form-group">
+            <label>Goal</label>
+            <select [(ngModel)]="selectedGoalId" class="input">
+              <option value="">Select Goal</option>
+              @for (goal of allGoals; track goal.id) {
+                <option [value]="goal.id">{{ goal.title }}</option>
+              }
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Sub-goal</label>
+            <select [(ngModel)]="selectedSubGoalId" class="input" [disabled]="!selectedGoalId">
+              <option value="">Select Sub-goal</option>
+              @for (sg of availableSubGoals; track sg.id) {
+                <option [value]="sg.id">{{ sg.title }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Task</label>
+            <select [(ngModel)]="selectedTaskId" class="input" [disabled]="!selectedSubGoalId">
+              <option value="">Select Task</option>
+              @for (task of availableTasks; track task.id) {
+                <option [value]="task.id">{{ task.title }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Status Update</label>
+            <select [(ngModel)]="newLog.status" class="input">
+              <option value="pending">Pending</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+        </div>
+      }
+
+      <div class="form-group">
+        <label>Title *</label>
+        <input [(ngModel)]="newLog.title" placeholder="Log title" class="input">
+      </div>
+      <div class="form-group">
+        <label>Content *</label>
+        <textarea [(ngModel)]="newLog.content" placeholder="What did you do today?" class="textarea" rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input [(ngModel)]="newLog.date" type="date" class="input" [max]="maxDate">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn" (click)="addLog()" [disabled]="!newLog.title || !newLog.content">Save Log</button>
+      </div>
+    </div>
+  </app-modal>
+
+  <div class="logs-list">
+    @for (log of filteredLogs(); track log.id) {
+      <div class="log-card" [class.progress-log]="log.type === 'progress'">
+        <div class="log-header">
+          <div class="title-row">
+            <span class="type-badge">{{ getLogTypeLabel(log.type) }}</span>
+            <h3>{{ log.title }}</h3>
+          </div>
+          @if (log.type === 'progress' && log.status) {
+            <span class="status-badge" [style.background-color]="getStatusColor(log.status)">{{ log.status }}</span>
+          }
+        </div>
+        <p class="log-content">{{ log.content }}</p>
+        <div class="log-footer">
+          <span class="log-date">{{ log.date }}</span>
+          <button class="delete-link" (click)="deleteLog(log.id)">Delete</button>
+        </div>
+      </div>
+    } @empty {
+      <p class="empty">No logs found for this period.</p>
+    }
+  </div>
+</div>

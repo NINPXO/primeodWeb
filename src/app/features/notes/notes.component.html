@@ -1,0 +1,75 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Notes</h1>
+      <p class="subtitle">Capture your ideas and study points</p>
+    </div>
+    <button class="btn" (click)="openModal()">+ New Note</button>
+  </div>
+
+  <app-modal [isOpen]="showModal" [title]="editingNote ? 'Edit Note' : 'Create Note'" (close)="closeModal()">
+    <div class="form-card">
+      <div class="form-group">
+        <label>Title</label>
+        <input [(ngModel)]="newNote.title" placeholder="Note title (optional)" class="input">
+      </div>
+
+      <div class="form-group">
+        <label>Category</label>
+        <div class="category-select-row">
+          <select [(ngModel)]="newNote.category" class="input">
+            <option value="">Select category</option>
+            @for (cat of storage.categories(); track cat.id) {
+              <option [value]="cat.name">{{ cat.name }}</option>
+            }
+          </select>
+          <button type="button" class="btn-small" (click)="showAddCategory = !showAddCategory">New</button>
+        </div>
+        @if (showAddCategory) {
+          <div class="add-category-inline">
+            <input [(ngModel)]="newCategory" placeholder="New category..." class="input">
+            <button type="button" class="btn-small primary" (click)="addCategory()">Add</button>
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Content *</label>
+        <textarea [(ngModel)]="newNote.content" placeholder="Write your note here..." class="textarea" rows="6"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+        <button class="btn" (click)="saveNote()" [disabled]="!newNote.content">
+          {{ editingNote ? 'Save Changes' : 'Create Note' }}
+        </button>
+      </div>
+    </div>
+  </app-modal>
+
+  <div class="notes-grid">
+    @for (note of storage.notes(); track note.id) {
+      <div class="note-card">
+        <div class="note-header">
+          <span class="category-tag" [class.empty]="!note.category">{{ note.category || 'Uncategorized' }}</span>
+          <div class="note-actions">
+            <button class="icon-btn edit" (click)="openModal(note)" title="Edit Note">✎</button>
+            <button class="icon-btn delete" (click)="deleteNote(note.id)" title="Delete Note">×</button>
+          </div>
+        </div>
+        @if (note.title) {
+          <h3>{{ note.title }}</h3>
+        }
+        <p class="note-content">{{ note.content }}</p>
+        <div class="note-footer">
+          <span class="note-date">{{ note.createdAt | date:'mediumDate' }}</span>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <div class="icon">📝</div>
+        <p>No notes yet. Capture your first thought!</p>
+      </div>
+    }
+  </div>
+</div>

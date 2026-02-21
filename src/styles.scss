@@ -1,0 +1,137 @@
+@use 'sass:math';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --screenWidth: tan(atan2(var(--_w), 1px));
+  --screenHeight: tan(atan2(var(--_h), 1px));
+  --maxWidth: 1728;
+  --mobileGridColumns: 8;
+  --intermediateGridColumns: 16;
+  --desktopGridColumns: 24;
+  --colorLight: #f9f7f7;
+  --colorOffWhite: #eceaea;
+  --colorWarmGrey: #dbd7d7;
+  --colorDark: #20033c;
+  --colorPink: #ff2ede;
+  --colorBlue: #3760f1;
+  --colorOrange: #ef6a14;
+  --colorYellow: #ffcb30;
+  --colorBlurple: #883fff;
+  --colorLightPurple: #d298ff;
+  --backgroundColor: var(--colorLight);
+  --buttonColor: var(--colorDark);
+  --textColor: var(--colorDark);
+  --borderColor: var(--colorWarmGrey);
+  --layoutWidth: 1696px;
+  --scrollbarWidth: 15px;
+  --windowWidth: calc(100vw - var(--scrollbarWidth));
+  --genericEaseInOut: cubic-bezier(0.45, 0.02, 0.09, 0.98);
+  --genericEaseOut: cubic-bezier(0.19, 1, 0.22, 1);
+  --overflowMargin: calc(var(--windowWidth) / 2 - var(--layoutWidth) / 2);
+  --gradientColor: rgb(244, 48, 225);
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-family);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--textColor);
+  background-color: var(--backgroundColor);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--layoutWidth);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 250ms var(--genericEaseInOut);
+  background-color: var(--buttonColor);
+  color: white;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.card {
+  background-color: var(--colorOffWhite);
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 250ms var(--genericEaseInOut);
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(32, 3, 60, 0.12);
+  transform: translateY(-2px);
+}
