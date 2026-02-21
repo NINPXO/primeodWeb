@@ -17,24 +17,37 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 48px;
+  transition: all 250ms var(--genericEaseInOut);
+
+  &:hover .logo-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 8px 20px rgba(255, 46, 222, 0.4);
+  }
 }
 
 .logo-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--colorPink);
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #ff2ede 0%, #ef6a14 100%);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 1.25rem;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: white;
+  transition: all 250ms var(--genericEaseInOut);
+  box-shadow: 0 4px 12px rgba(255, 46, 222, 0.3);
 }
 
 .logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #ff2ede 0%, #ffcb30 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav-menu {
@@ -45,20 +58,25 @@
 
 .nav-item {
   padding: 14px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.5px;
-  transition: all 200ms var(--genericEaseInOut);
-  color: rgba(255, 255, 255, 0.7);
+  transition: all 250ms var(--genericEaseInOut);
+  color: rgba(255, 255, 255, 0.75);
+  border-left: 3px solid transparent;
+  margin-left: -3px;
 }
 
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--colorLight);
+  background: linear-gradient(135deg, rgba(255, 46, 222, 0.2) 0%, rgba(136, 63, 255, 0.2) 100%);
+  color: white;
+  border-left-color: var(--colorPink);
 }
 
 .nav-item.active {
-  background: var(--colorPink);
+  background: linear-gradient(135deg, #ff2ede 0%, #883fff 100%);
   color: white;
+  border-left-color: var(--colorYellow);
+  box-shadow: 0 4px 12px rgba(255, 46, 222, 0.3);
 }
